@@ -78,6 +78,15 @@ function getProductsFromApi() {
   }));
 }
 
+function eraseCart() {
+  const buttonEmptyCart = document.querySelector('.empty-cart');
+  const orderedList = document.querySelector('.cart__items');
+  buttonEmptyCart.addEventListener('click', () => {
+    orderedList.innerHTML = '';
+  });
+}
+
 window.onload = () => {
   getProductsFromApi();
+  eraseCart();
 };
