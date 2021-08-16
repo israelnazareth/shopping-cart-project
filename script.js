@@ -1,8 +1,13 @@
+const orderedList = document.querySelector('.cart__items');
+
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
   img.className = 'item__image';
   img.src = imageSource;
   return img;
+}
+
+function savedCart() {
 }
 
 // Informações de exibição do produto
@@ -18,7 +23,10 @@ function getObjectInfo(productInfo) {
 
 function cartItemClickListener(event) {
   event.target.remove();
+  localStorage.setItem('listItems', orderedList.innerHTML);
 }
+
+orderedList.addEventListener('click', cartItemClickListener);
 
 function createCartItemElement({ sku, name, salePrice }) {
   const li = document.createElement('li');
@@ -27,6 +35,9 @@ function createCartItemElement({ sku, name, salePrice }) {
   li.addEventListener('click', cartItemClickListener);
   return li;
 }
+
+const savedItems = localStorage.getItem('listItems');
+orderedList.innerHTML = savedItems;
 
 // Obtém itens da API através do ID
 const getItemsFromApiWithID = (event) => {
@@ -37,6 +48,7 @@ const getItemsFromApiWithID = (event) => {
     const cartItems = document.querySelector('.cart__items');
     const itens = getObjectInfo(response);
     cartItems.appendChild(createCartItemElement(itens));
+    localStorage.setItem('listItems', orderedList.innerHTML);
   });
 };
 
@@ -46,7 +58,7 @@ function createCustomElement(element, className, innerText) {
   e.innerText = innerText;
   if (element === 'button') {
     e.addEventListener('click', getItemsFromApiWithID);
-  }
+  }  
   return e;
 }
 
@@ -66,7 +78,7 @@ function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
 
-// Obter todos os produtos da API de busca específica
+// Obtém todos os produtos da API de busca específica
 function getProductsFromApi() {
   fetch('https://api.mercadolibre.com/sites/MLB/search?q=computador')
   .then((data) => data.json())
@@ -80,7 +92,6 @@ function getProductsFromApi() {
 
 function eraseCart() {
   const buttonEmptyCart = document.querySelector('.empty-cart');
-  const orderedList = document.querySelector('.cart__items');
   buttonEmptyCart.addEventListener('click', () => {
     orderedList.innerHTML = '';
   });
