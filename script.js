@@ -7,9 +7,6 @@ function createProductImageElement(imageSource) {
   return img;
 }
 
-function savedCart() {
-}
-
 // Informações de exibição do produto
 function getObjectInfo(productInfo) {
   const productObject = {
@@ -87,9 +84,11 @@ function getProductsFromApi() {
     const itemsSection = document.querySelector('.items');
     const product = getObjectInfo(element);
     itemsSection.appendChild(createProductItemElement(product));
-  }));
+  }))
+  .then(() => document.querySelector('.loading').remove());
 }
 
+// Esvazia o carrinho através do botão
 function eraseCart() {
   const buttonEmptyCart = document.querySelector('.empty-cart');
   buttonEmptyCart.addEventListener('click', () => {
